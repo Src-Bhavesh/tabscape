@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'product';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'),
+    url(https://fonts.gstatic.com/s/productsans/v5/HYvgU2fE2nRJvZ5JFAumwegdm0LZdjqr5-oayXSOefg.woff2) format('woff2');
+}
+
+/* On html only: a body background would paint over the wallpaper layers behind the page. */
+html {
+  background: #202125;
+}
+
+body {
+  color: #fff;
+  font-family: product, 'Open Sans', system-ui, sans-serif;
+}
+
+@layer components {
+  /** Section titles: the gradient shows through the letters. */
+  .gradient-text {
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .glass {
+    @apply bg-neutral-900/80 backdrop-blur-xl ring-1 ring-white/10 shadow-2xl;
+  }
+
+  .field {
+    @apply rounded-md bg-white/10 px-2 py-1 text-sm text-white outline-none ring-1 ring-white/10
+      placeholder:text-white/35 focus:bg-white/15 focus:ring-white/40 transition;
+  }
+
+  .icon-btn {
+    @apply rounded-md p-1.5 text-white/60 transition-colors hover:bg-white/10 hover:text-white;
+  }
+
+  .switch {
+    @apply h-4 w-4 cursor-pointer accent-sky-500;
+  }
+}
+
+/* Route changes. */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
+}
+
+/* Setup steps slide along. */
+.step-enter-active,
+.step-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.step-enter-from {
+  opacity: 0;
+  transform: translateX(16px);
+}
+.step-leave-to {
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+/* Background crossfade. */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.4s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Flyouts and rows coming and going. */
+.pop-enter-active,
+.pop-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.pop-enter-from,
+.pop-leave-to {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
+}
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(-8px);
+}
+.list-leave-active {
+  position: absolute;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
