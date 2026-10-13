@@ -69,10 +69,10 @@ const active = ref(0)
       <!-- Hero -->
       <section class="mx-auto max-w-6xl px-5 pb-16 pt-10 text-center sm:pt-16">
         <h1 class="mx-auto max-w-3xl text-5xl font-bold leading-[1.05] tracking-tight sm:text-7xl">
-          A new tab that feels like home.
+          Say hello to productivity.
         </h1>
         <p class="mx-auto mt-6 max-w-xl text-lg text-white/75 sm:text-xl">
-          Your favourite sites, a friendly hello, and a night sky that moves. Every time you open a tab.
+          Your go-to sites, one click from every new tab. Zero clutter. Seriously good looks.
         </p>
         <div class="mt-9 flex flex-wrap items-center justify-center gap-3">
           <a

@@ -4,7 +4,7 @@
 
 <h1 align="center">Tabscape</h1>
 
-<p align="center">A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.</p>
+<p align="center">Say hello to productivity: your go-to sites one click away on every new tab, with zero clutter and seriously good looks.</p>
 
 <p align="center">
   <a href="https://heyjeay.github.io/tabscape/">Website</a> ·

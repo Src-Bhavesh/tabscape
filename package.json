@@ -32,6 +32,6 @@
     "vue-tsc": "^2.1.10"
   },
   "license": "GPL-3.0-or-later",
-  "description": "A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.",
+  "description": "Say hello to productivity: your go-to sites one click away on every new tab, with zero clutter and seriously good looks.",
   "homepage": "https://heyjeay.github.io/tabscape/"
 }

@@ -8,7 +8,7 @@ Copy these into the Developer Dashboard. Images are in this folder.
 
 **Summary** (132 characters max)
 
-> A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.
+> Say hello to productivity: your go-to sites one click away on every new tab, with zero clutter and seriously good looks.
 
 **Category:** Productivity
 

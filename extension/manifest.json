@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Tabscape",
-  "description": "A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.",
+  "description": "Say hello to productivity: your go-to sites one click away on every new tab, with zero clutter and seriously good looks.",
   "version": "0.0.0",
   "chrome_url_overrides": {
     "newtab": "index.html"
