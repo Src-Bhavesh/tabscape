@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  ArrowRight, Chrome, Cloud, LayoutGrid, Palette, ShieldCheck, Sparkles, Wand2
+  ArrowRight, Cloud, LayoutGrid, Palette, Puzzle, ShieldCheck, Sparkles, Wand2
 } from 'lucide-vue-next'
 import AnimatedWallpaper from '@/components/AnimatedWallpaper.vue'
-import { STORE_URL } from '@/config'
+import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/config'
 import { findWallpaper } from '@/lib/wallpapers'
 import logo from '@/assets/logo.svg'
 import shotPage from '../../store/screenshots/1-new-tab.png'
@@ -16,12 +16,19 @@ import shotSearch from '../../store/screenshots/5-search-clock.png'
 /** The website for Tabscape: what it is, a look at it, and the way into the live demo. */
 const sky = findWallpaper('stars')
 
+/** Where to get it. Whichever browser the visitor is using comes first. */
+const STORES = [
+  { name: 'Chrome', url: CHROME_STORE_URL },
+  { name: 'Firefox', url: FIREFOX_STORE_URL }
+]
+if (navigator.userAgent.includes('Firefox')) STORES.reverse()
+
 const FEATURES = [
   { icon: Wand2, title: 'Set up in a minute', body: 'Pick from popular categories like gaming, streaming and AI, or start from a ready-made set. No account, no fuss.' },
   { icon: LayoutGrid, title: 'Your sites, your way', body: 'Rename sections, recolour them, and drag links wherever you like. Changes save as you type.' },
   { icon: Sparkles, title: 'Backgrounds that breathe', body: 'Starry nights, city lights, rain, fireflies and snow, drawn live and light on your computer.' },
   { icon: Palette, title: 'Make it yours', body: 'A greeting with your name, an optional clock and search box, and your links at the top, middle or bottom.' },
-  { icon: Cloud, title: 'Follows you around', body: 'Sign into Chrome on another computer and your new tab is already there, set up just how you left it.' },
+  { icon: Cloud, title: 'Follows you around', body: 'Sign into Chrome or Firefox on another computer and your new tab is already there, set up just how you left it.' },
   { icon: ShieldCheck, title: 'Private by design', body: 'No account, no servers, no tracking. Your setup lives in your browser and nowhere else.' }
 ]
 
@@ -72,20 +79,25 @@ const active = ref(0)
           >
             Try it live <ArrowRight :size="18" />
           </a>
-          <a
-            v-if="STORE_URL"
-            :href="STORE_URL"
-            class="flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-medium text-white shadow-lg transition hover:bg-sky-400"
-          >
-            <Chrome :size="18" /> Add to Chrome, it's free
-          </a>
-          <span
-            v-else
-            class="flex items-center gap-2 rounded-full px-5 py-3 text-sm text-white/60 ring-1 ring-white/15"
-          >
-            <Chrome :size="16" /> Coming soon to the Chrome Web Store
-          </span>
+          <template v-for="store in STORES" :key="store.name">
+            <a
+              v-if="store.url"
+              :href="store.url"
+              class="flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-medium text-white shadow-lg transition hover:bg-sky-400"
+            >
+              <Puzzle :size="18" /> Add to {{ store.name }}
+            </a>
+            <span
+              v-else
+              class="flex items-center gap-2 rounded-full px-5 py-3 text-sm text-white/60 ring-1 ring-white/15"
+            >
+              <Puzzle :size="16" /> {{ store.name }}: coming soon
+            </span>
+          </template>
         </div>
+        <p class="mt-4 text-sm text-white/50">
+          Free for Chrome and Firefox. Works in Edge, Brave and Opera too.
+        </p>
 
         <div class="relative mx-auto mt-14 max-w-5xl">
           <div class="absolute -inset-6 -z-10 rounded-[2rem] bg-indigo-500/20 blur-3xl" />
@@ -159,8 +171,8 @@ const active = ref(0)
           <div class="mt-4 space-y-3 text-white/75">
             <p>Tabscape does not collect, sell or share any personal data. There are no accounts, no analytics and no servers.</p>
             <p>
-              Your links and settings are stored in your browser. If "Sync across devices" is on, Chrome copies them
-              between your own browsers through your Google account's sync. That copy is handled by Chrome, and it is never sent to us.
+              Your links and settings are stored in your browser. If "Sync across devices" is on, your browser copies them
+              between your own computers through Chrome sync or Firefox Sync. That copy is handled by your browser, and it is never sent to us.
             </p>
             <p>Custom background images load straight from the address you give. You can export or delete your setup at any time from the customize panel.</p>
           </div>

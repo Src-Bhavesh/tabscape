@@ -7,27 +7,31 @@ import path from 'node:path'
 /**
  * Adds the extension's manifest to the build (the icons come along from public/).
  * The manifest takes its version from package.json, so there's one number to bump.
+ * Firefox gets the same manifest plus its own settings: an add-on id, and the
+ * data-collection declaration addons.mozilla.org asks every new add-on for.
  */
-const chromeExtension = (): Plugin => ({
-  name: 'chrome-extension',
+const browserExtension = (browser: 'chrome' | 'firefox'): Plugin => ({
+  name: 'browser-extension',
   generateBundle() {
     const { version } = JSON.parse(readFileSync(path.resolve(__dirname, 'package.json'), 'utf8'))
     const manifest = JSON.parse(readFileSync(path.resolve(__dirname, 'extension/manifest.json'), 'utf8'))
-    this.emitFile({ type: 'asset', fileName: 'manifest.json', source: JSON.stringify({ ...manifest, version }, null, 2) })
+    const firefox = JSON.parse(readFileSync(path.resolve(__dirname, 'extension/firefox.json'), 'utf8'))
+    const source = browser === 'firefox' ? { ...manifest, ...firefox, version } : { ...manifest, version }
+    this.emitFile({ type: 'asset', fileName: 'manifest.json', source: JSON.stringify(source, null, 2) })
   },
 })
 
 export default defineConfig(({ mode }) => {
-  const extension = mode === 'extension'
+  const extension = mode === 'extension' || mode === 'firefox'
   const site = mode === 'site'
-  const OUT = { extension: 'dist-extension', site: 'dist-site' } as Record<string, string>
+  const OUT = { extension: 'dist-extension', firefox: 'dist-firefox', site: 'dist-site' } as Record<string, string>
   return {
     // Three ways to ship the same page:
-    // - extension: Chrome blocks inline scripts on extension pages, so the code stays in separate files.
+    // - extension (Chrome) and firefox: browsers block inline scripts on extension pages, so the code stays in separate files.
     // - site: the website, a landing page at the root and the page itself as a live demo at /demo/.
     // - default: all the code inside index.html, since browsers won't load separate module
     //   scripts from file:// - this is what lets the page open with a double-click.
-    plugins: [vue(), ...(extension ? [chromeExtension()] : site ? [] : [viteSingleFile()])],
+    plugins: [vue(), ...(extension ? [browserExtension(mode === 'firefox' ? 'firefox' : 'chrome')] : site ? [] : [viteSingleFile()])],
     root: site ? path.resolve(__dirname, 'site') : __dirname,
     publicDir: path.resolve(__dirname, 'public'),
     // Relative, so every build works from wherever it's served or opened.

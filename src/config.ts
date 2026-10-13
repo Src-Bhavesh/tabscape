@@ -1,8 +1,9 @@
 /** Flip on to log store loads, saves and cross-tab syncs to the console. */
 export const debug = false
 
-/** The Chrome Web Store page, once Tabscape is approved. Empty shows "coming soon" on the website. */
-export const STORE_URL = ''
+/** Tabscape's store pages, once each is approved. An empty one shows as "coming soon" on the website. */
+export const CHROME_STORE_URL = ''
+export const FIREFOX_STORE_URL = ''
 
 export const log = (...args: unknown[]) => {
   if (debug) console.log('[tabscape]', ...args)

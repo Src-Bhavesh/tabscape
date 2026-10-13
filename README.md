@@ -30,11 +30,14 @@ Needs Node 20 or newer.
 npm install
 npm run dev              # the new tab page, at http://localhost:5173
 npm run build:extension  # the Chrome extension, in dist-extension/
+npm run build:firefox    # the Firefox add-on, in dist-firefox/
 npm run build:site       # the website and live demo, in dist-site/
 npm run build            # a single index.html that opens with a double-click, in dist/
 ```
 
-To try the extension, open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and choose `dist-extension`.
+To try it in Chrome (or Edge, Brave, Opera), open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and choose `dist-extension`.
+
+To try it in Firefox, open `about:debugging#/runtime/this-firefox`, click **Load Temporary Add-on** and choose `dist-firefox/manifest.json`. It stays until Firefox restarts.
 
 Built with Vue 3, Vite and Tailwind CSS. Pushing to `master` deploys the website to GitHub Pages.
 

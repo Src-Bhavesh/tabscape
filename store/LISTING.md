@@ -65,3 +65,17 @@ Then tick the three certifications (data not sold, not used for unrelated purpos
 ## Upload
 
 Upload `tabscape-1.1.0.zip` from this folder. To make a new one after changes, bump `version` in `package.json`, then run `npm run build:extension` and zip the contents of `dist-extension/` (manifest at the top level of the zip).
+
+## Firefox (addons.mozilla.org)
+
+Submit at https://addons.mozilla.org/developers/addon/submit/ and choose **On this site**.
+
+- **Upload:** a zip of the contents of `dist-firefox/` (`npm run build:firefox`).
+- **Source code:** the add-on's JavaScript is built by Vite, so AMO asks for the source. Answer **Yes**, upload a zip of the repository (or link https://github.com/heyjeay/tabscape), and give these build steps:
+  `npm ci` then `npm run build:firefox`; the add-on is in `dist-firefox/`. Built with Node 22.
+- **Name, summary, description:** the same as above.
+- **Categories:** "Tabs" and "Appearance".
+- **Licence:** GNU General Public License v3.0.
+- **Privacy policy:** https://heyjeay.github.io/tabscape/#privacy
+- **Data collection:** already declared as none in the manifest.
+- **Images:** the same icon and screenshots work. AMO doesn't use the promo tiles.
