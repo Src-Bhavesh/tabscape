@@ -7,8 +7,8 @@
 <p align="center">A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.</p>
 
 <p align="center">
-  <a href="https://heyjeay.github.io/Tabscape/">Website</a> ·
-  <a href="https://heyjeay.github.io/Tabscape/demo/">Live demo</a>
+  <a href="https://heyjeay.github.io/tabscape/">Website</a> ·
+  <a href="https://heyjeay.github.io/tabscape/demo/">Live demo</a>
 </p>
 
 ![Tabscape](store/screenshots/1-new-tab.png)

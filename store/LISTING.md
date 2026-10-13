@@ -64,4 +64,4 @@ Then tick the three certifications (data not sold, not used for unrelated purpos
 
 ## Upload
 
-Upload `tabscape-1.0.0.zip` from this folder. To make a new one after changes, bump `version` in `package.json`, then run `npm run build:extension` and zip the contents of `dist-extension/` (manifest at the top level of the zip).
+Upload `tabscape-1.1.0.zip` from this folder. To make a new one after changes, bump `version` in `package.json`, then run `npm run build:extension` and zip the contents of `dist-extension/` (manifest at the top level of the zip).
