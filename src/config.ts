@@ -5,6 +5,9 @@ export const debug = false
 export const CHROME_STORE_URL = ''
 export const FIREFOX_STORE_URL = ''
 
+/** Where people get help and suggest features. */
+export const DISCORD_URL = 'https://discord.gg/T5bF56tvyj'
+
 export const log = (...args: unknown[]) => {
   if (debug) console.log('[tabscape]', ...args)
 }

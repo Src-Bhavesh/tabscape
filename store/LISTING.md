@@ -36,6 +36,9 @@ Copy these into the Developer Dashboard. Images are in this folder.
 >
 > **Private by design**
 > Tabscape has no account and no servers. Your setup lives in your browser and follows you to your other computers through your own Chrome sync, if you want it to. Export a backup file any time to keep a copy.
+>
+> **Support and feature requests**
+> Need help, or have an idea? Join the Tabscape Discord: https://discord.gg/T5bF56tvyj
 
 ## Graphics
 
@@ -64,7 +67,7 @@ Then tick the three certifications (data not sold, not used for unrelated purpos
 
 ## Upload
 
-Upload `tabscape-1.1.0.zip` from this folder. To make a new one after changes, bump `version` in `package.json`, then run `npm run build:extension` and zip the contents of `dist-extension/` (manifest at the top level of the zip).
+Upload `tabscape-1.1.1.zip` from this folder. To make a new one after changes, bump `version` in `package.json`, then run `npm run build:extension` and zip the contents of `dist-extension/` (manifest at the top level of the zip).
 
 ## Firefox (addons.mozilla.org)
 

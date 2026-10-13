@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import {
   ArrowRight, Cloud, LayoutGrid, Palette, ShieldCheck, Sparkles, Wand2
 } from 'lucide-vue-next'
-import { siFirefoxbrowser, siGooglechrome } from 'simple-icons'
+import { siDiscord, siFirefoxbrowser, siGooglechrome } from 'simple-icons'
 import AnimatedWallpaper from '@/components/AnimatedWallpaper.vue'
 import BrandIcon from '@/components/BrandIcon.vue'
-import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/config'
+import { CHROME_STORE_URL, DISCORD_URL, FIREFOX_STORE_URL } from '@/config'
 import { findWallpaper } from '@/lib/wallpapers'
 import logo from '@/assets/logo.svg'
 import shotPage from '../../store/screenshots/1-new-tab.png'
@@ -180,11 +180,37 @@ const active = ref(0)
           </div>
         </div>
       </section>
+
+      <!-- Support, at the bottom: the Discord is where help and feature ideas go. -->
+      <section id="community" class="mx-auto max-w-3xl scroll-mt-6 px-5 pb-6 pt-4">
+        <div class="flex flex-col items-center gap-5 rounded-2xl bg-[#5865F2]/15 p-8 text-center ring-1 ring-[#5865F2]/35 backdrop-blur-md sm:flex-row sm:text-left">
+          <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-[#5865F2] text-white shadow-lg">
+            <BrandIcon :path="siDiscord.path" :size="30" />
+          </span>
+          <div class="flex-1">
+            <h2 class="text-xl font-bold">Need help, or have an idea?</h2>
+            <p class="mt-1 text-white/70">Join the Tabscape Discord for support, and to suggest the features you want next.</p>
+          </div>
+          <a
+            :href="DISCORD_URL"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex shrink-0 items-center gap-2 rounded-full bg-[#5865F2] px-5 py-2.5 font-medium text-white shadow-lg transition hover:bg-[#4752c4]"
+          >
+            <BrandIcon :path="siDiscord.path" :size="18" /> Join the Discord
+          </a>
+        </div>
+      </section>
     </main>
 
     <footer class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-white/45">
       <span class="flex items-center gap-2"><img :src="logo" alt="" class="h-5 w-5"> Tabscape</span>
-      <span>Made by Jeay · {{ new Date().getFullYear() }}</span>
+      <span class="flex items-center gap-4">
+        <a :href="DISCORD_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 transition hover:text-white">
+          <BrandIcon :path="siDiscord.path" :size="15" /> Discord
+        </a>
+        <span>Made by Jeay · {{ new Date().getFullYear() }}</span>
+      </span>
     </footer>
   </div>
 </template>

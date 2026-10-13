@@ -5,7 +5,10 @@ import {
   Check, Cloud, CloudOff, Download, Loader2, RotateCcw, SlidersHorizontal, Upload, Wand2
 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
+import { siDiscord } from 'simple-icons'
+import BrandIcon from '@/components/BrandIcon.vue'
 import WallpaperPicker from '@/components/WallpaperPicker.vue'
+import { DISCORD_URL } from '@/config'
 import { useStartpage } from '@/composables/useStartpage'
 import { findWallpaper } from '@/lib/wallpapers'
 import type { Position } from '@/lib/defaults'
@@ -252,6 +255,15 @@ const reset = () => {
         >
           <Wand2 :size="13" /> Run setup again
         </button>
+        <a
+          :href="DISCORD_URL"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="mt-3 flex items-center gap-2.5 rounded-lg bg-[#5865F2]/15 px-3 py-2.5 text-xs text-white/80 ring-1 ring-[#5865F2]/40 transition hover:bg-[#5865F2]/25 hover:text-white"
+        >
+          <BrandIcon :path="siDiscord.path" :size="18" class="shrink-0 text-[#8b93ff]" />
+          <span><span class="font-semibold text-white">Help or ideas?</span> Join the Discord for support and to suggest features.</span>
+        </a>
         <p v-if="notice" class="px-1 pt-2 text-[11px] text-white/70">{{ notice }}</p>
       </div>
     </Transition>

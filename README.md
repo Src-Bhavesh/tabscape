@@ -22,6 +22,10 @@
 - **Follows you around:** with Chrome sync on, your setup appears on any browser signed into your account.
 - **Private by design:** no account, no servers, no tracking.
 
+## Help and ideas
+
+Need help, or have a feature you'd like? Join the [Tabscape Discord](https://discord.gg/T5bF56tvyj).
+
 ## Building
 
 Needs Node 20 or newer.
