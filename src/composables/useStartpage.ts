@@ -1,5 +1,6 @@
 import { reactive, watch } from 'vue'
 import { log } from '@/config'
+import { onRemoteChange, pushSnapshot, readSnapshot, syncAvailable, SyncTooBig, type Snapshot } from '@/lib/sync'
 import {
   DEFAULT_SETTINGS, defaultSections, uid,
   type Link, type Section, type Settings
@@ -8,7 +9,9 @@ import type { Gradient } from '@/lib/gradients'
 
 /**
  * The page's links and options, kept in localStorage so edits survive a
- * reload, and synced between open tabs.
+ * reload, and synced between open tabs. In the extension they also go to
+ * Chrome's synced storage (lib/sync), so they follow the person between
+ * computers; localStorage stays the copy the page reads from.
  *
  * One store for the whole app, created on first import: its watchers and the
  * storage listener live as long as the page does, so there is nothing to tear down.
@@ -18,6 +21,14 @@ const SECTIONS_KEY = 'startpage_sections'
 const SETTINGS_KEY = 'startpage_settings'
 /** Set once the first-run setup has been finished or skipped. */
 const WELCOMED_KEY = 'startpage_welcomed'
+/** When this browser's copy last changed, to tell which side of a sync is newer. */
+const UPDATED_KEY = 'startpage_updated'
+/** Whether this browser syncs. Kept per browser, never synced itself. */
+const SYNC_PREF_KEY = 'startpage_sync'
+/** This browser's links from before sync first replaced them, for undoing that. */
+const PRESYNC_KEY = 'startpage_presync_backup'
+/** How long to gather edits before pushing them: typing would otherwise exceed Chrome's write rate. */
+const SYNC_DELAY_MS = 1500
 
 /** What each key last held, so a write that changes nothing is skipped - and a sync from another tab isn't echoed back. */
 const lastWritten: Record<string, string | null> = {}
@@ -33,13 +44,32 @@ const read = (key: string): unknown => {
   }
 }
 
-const write = (key: string, value: unknown) => {
+/** Save a value, returning whether it changed anything. */
+const write = (key: string, value: unknown): boolean => {
   const json = JSON.stringify(value)
-  if (json === lastWritten[key]) return
+  if (json === lastWritten[key]) return false
   try {
     localStorage.setItem(key, json)
     lastWritten[key] = json
     log('saved', key)
+  } catch (e) {
+    console.warn(`[tabscape] Couldn't save ${key}`, e)
+  }
+  return true
+}
+
+const getRaw = (key: string) => {
+  try {
+    return localStorage.getItem(key)
+  } catch {
+    return null
+  }
+}
+
+const setRaw = (key: string, value: string | null) => {
+  try {
+    if (value === null) localStorage.removeItem(key)
+    else localStorage.setItem(key, value)
   } catch (e) {
     console.warn(`[tabscape] Couldn't save ${key}`, e)
   }
@@ -90,24 +120,116 @@ const cleanSettings = (input: unknown): Settings => {
 
 const savedSections = cleanSections(read(SECTIONS_KEY))
 
-const hasWelcomeFlag = () => {
-  try {
-    return localStorage.getItem(WELCOMED_KEY) === '1'
-  } catch {
-    return false
-  }
-}
+let updatedAt = Number(getRaw(UPDATED_KEY)) || 0
 
 const state = reactive({
   sections: savedSections ?? defaultSections(),
   settings: cleanSettings(read(SETTINGS_KEY)),
   // Anyone who already has links saved has been using the page: don't greet them as new.
-  welcomed: !!savedSections || hasWelcomeFlag()
+  welcomed: !!savedSections || getRaw(WELCOMED_KEY) === '1',
+  sync: {
+    available: syncAvailable(),
+    enabled: syncAvailable() && getRaw(SYNC_PREF_KEY) !== '0',
+    status: 'idle' as 'idle' | 'syncing' | 'synced' | 'error',
+    message: '',
+    /** Sync replaced this browser's own links; they can be put back. */
+    canRestore: !!getRaw(PRESYNC_KEY)
+  }
 })
 log('loaded', state.sections.length, 'sections')
 
-watch(() => state.sections, v => write(SECTIONS_KEY, v), { deep: true })
-watch(() => state.settings, v => write(SETTINGS_KEY, v), { deep: true })
+let syncTimer: ReturnType<typeof setTimeout> | undefined
+
+const pushNow = async () => {
+  clearTimeout(syncTimer)
+  syncTimer = undefined
+  if (!state.sync.enabled) return
+  state.sync.status = 'syncing'
+  try {
+    await pushSnapshot({ updatedAt, welcomed: state.welcomed, sections: state.sections, settings: state.settings })
+    state.sync.status = 'synced'
+    state.sync.message = ''
+  } catch (e) {
+    state.sync.status = 'error'
+    state.sync.message = e instanceof SyncTooBig ? e.message : "Couldn't reach sync. Your changes are saved on this computer."
+    console.warn('[tabscape] Sync push failed', e)
+  }
+}
+
+const scheduleSync = () => {
+  if (!state.sync.enabled) return
+  clearTimeout(syncTimer)
+  syncTimer = setTimeout(pushNow, SYNC_DELAY_MS)
+}
+
+/** Something here changed: stamp it, and pass it on to sync. */
+const touched = () => {
+  updatedAt = Date.now()
+  setRaw(UPDATED_KEY, String(updatedAt))
+  scheduleSync()
+}
+
+watch(() => state.sections, v => { if (write(SECTIONS_KEY, v)) touched() }, { deep: true })
+watch(() => state.settings, v => { if (write(SETTINGS_KEY, v)) touched() }, { deep: true })
+
+/** Take a newer copy from sync. Saved straight away, so the watchers see nothing new and don't push it back. */
+const applyRemote = (remote: Snapshot) => {
+  const sections = cleanSections(remote.sections)
+  if (!sections) return
+  // The first time sync replaces links this browser already had, keep them so they can be put back.
+  if (!getRaw(UPDATED_KEY) && savedSections && !getRaw(PRESYNC_KEY)) {
+    setRaw(PRESYNC_KEY, lastWritten[SECTIONS_KEY] ?? null)
+    state.sync.canRestore = true
+  }
+  const settings = cleanSettings(remote.settings)
+  write(SECTIONS_KEY, sections)
+  write(SETTINGS_KEY, settings)
+  state.sections = sections
+  Object.assign(state.settings, settings)
+  if (remote.welcomed && !state.welcomed) {
+    state.welcomed = true
+    setRaw(WELCOMED_KEY, '1')
+  }
+  updatedAt = remote.updatedAt
+  setRaw(UPDATED_KEY, String(updatedAt))
+  log('took the synced copy from', new Date(updatedAt).toISOString())
+}
+
+/** Line this browser up with sync: take the synced copy if it's newer, otherwise send ours. */
+const reconcile = async () => {
+  if (!state.sync.enabled) return
+  state.sync.status = 'syncing'
+  try {
+    const remote = await readSnapshot()
+    if (remote && remote.updatedAt > updatedAt) {
+      applyRemote(remote)
+      state.sync.status = 'synced'
+    } else if (state.welcomed) {
+      await pushNow()
+    } else {
+      state.sync.status = 'idle'
+    }
+  } catch (e) {
+    state.sync.status = 'error'
+    state.sync.message = "Couldn't reach sync. Your links are saved on this computer."
+    console.warn('[tabscape] Sync read failed', e)
+  }
+}
+
+// Another device pushed something newer.
+onRemoteChange(remoteUpdatedAt => {
+  if (state.sync.enabled && remoteUpdatedAt > updatedAt) reconcile()
+})
+
+/**
+ * Settles once a synced copy has been taken (or there's none). The app mounts
+ * after it, so a new computer opens straight on the person's links rather than
+ * on the setup. Capped, so a slow sync never holds the page back.
+ */
+export const storeReady: Promise<void> = Promise.race([
+  reconcile(),
+  new Promise<void>(resolve => setTimeout(resolve, 800))
+])
 
 const parse = (json: string | null): unknown => {
   try {
@@ -126,6 +248,8 @@ window.addEventListener('storage', e => {
     log('synced sections from another tab')
   } else if (e.key === WELCOMED_KEY) {
     state.welcomed = e.newValue === '1'
+  } else if (e.key === UPDATED_KEY) {
+    updatedAt = Number(e.newValue) || 0
   } else if (e.key === SETTINGS_KEY) {
     lastWritten[SETTINGS_KEY] = e.newValue
     Object.assign(state.settings, cleanSettings(parse(e.newValue)))
@@ -196,12 +320,29 @@ export const useStartpage = () => {
   const completeWelcome = (sections: Section[] = defaultSections()) => {
     state.sections = sections
     state.welcomed = true
-    try {
-      localStorage.setItem(WELCOMED_KEY, '1')
-    } catch (e) {
-      console.warn("[tabscape] Couldn't save the setup flag", e)
-    }
+    setRaw(WELCOMED_KEY, '1')
+    touched()
     log('setup finished with', sections.length, 'sections')
+  }
+
+  /** Turn sync on or off for this browser. Turning it off leaves the synced copy alone for other devices. */
+  const setSyncEnabled = (on: boolean) => {
+    state.sync.enabled = on && state.sync.available
+    setRaw(SYNC_PREF_KEY, on ? '1' : '0')
+    if (state.sync.enabled) reconcile()
+    else {
+      clearTimeout(syncTimer)
+      state.sync.status = 'idle'
+      state.sync.message = ''
+    }
+  }
+
+  /** Put back the links this browser had before sync first replaced them. */
+  const restorePreSync = () => {
+    const backup = cleanSections(parse(getRaw(PRESYNC_KEY)))
+    if (backup) state.sections = backup
+    setRaw(PRESYNC_KEY, null)
+    state.sync.canRestore = false
   }
   const resetSettings = () => { Object.assign(state.settings, DEFAULT_SETTINGS) }
 
@@ -210,6 +351,6 @@ export const useStartpage = () => {
     addSection, removeSection, shiftSection,
     addLink, removeLink, moveLink,
     exportData, importData, resetLinks, resetSettings,
-    completeWelcome
+    completeWelcome, setSyncEnabled, restorePreSync
   }
 }

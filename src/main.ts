@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import { storeReady } from './composables/useStartpage'
 import './style.css'
 
-createApp(App).use(router).mount('#app')
+// The router's first navigation decides between the page and the setup, so it waits for synced links.
+storeReady.then(() => createApp(App).use(router).mount('#app'))

@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 import {
   AlignVerticalJustifyCenter, AlignVerticalJustifyEnd, AlignVerticalJustifyStart,
-  Check, Download, RotateCcw, SlidersHorizontal, Upload, Wand2
+  Check, Cloud, CloudOff, Download, Loader2, RotateCcw, SlidersHorizontal, Upload, Wand2
 } from 'lucide-vue-next'
 import { useRouter } from 'vue-router'
 import WallpaperPicker from '@/components/WallpaperPicker.vue'
@@ -16,7 +16,7 @@ const POSITIONS: { id: Position; name: string; icon: typeof Check }[] = [
   { id: 'bottom', name: 'Bottom', icon: AlignVerticalJustifyEnd }
 ]
 
-const { state, exportData, importData, resetLinks, resetSettings } = useStartpage()
+const { state, exportData, importData, resetLinks, resetSettings, setSyncEnabled, restorePreSync } = useStartpage()
 const router = useRouter()
 const settings = state.settings
 
@@ -194,9 +194,45 @@ const reset = () => {
           </label>
         </div>
 
+        <template v-if="state.sync.available">
+          <h3 class="mt-4 border-t border-white/10 px-1 pb-2 pt-3 text-xs font-semibold uppercase tracking-wider text-white/45">Sync</h3>
+          <div class="space-y-1.5 px-1 text-xs">
+            <label class="flex cursor-pointer items-center justify-between">
+              <span class="text-white/70">Sync across devices</span>
+              <input
+                type="checkbox"
+                class="switch"
+                :checked="state.sync.enabled"
+                @change="setSyncEnabled(($event.target as HTMLInputElement).checked)"
+              >
+            </label>
+            <p class="flex items-center gap-1.5 text-[11px] leading-snug text-white/45">
+              <template v-if="!state.sync.enabled">
+                <CloudOff :size="12" class="shrink-0" /> Your setup stays on this computer.
+              </template>
+              <template v-else-if="state.sync.status === 'error'">
+                <CloudOff :size="12" class="shrink-0 text-amber-300" /> <span class="text-amber-200/90">{{ state.sync.message }}</span>
+              </template>
+              <template v-else-if="state.sync.status === 'syncing'">
+                <Loader2 :size="12" class="shrink-0 animate-spin" /> Syncing...
+              </template>
+              <template v-else>
+                <Cloud :size="12" class="shrink-0 text-emerald-300" /> Follows you to any browser signed into your account.
+              </template>
+            </p>
+            <button
+              v-if="state.sync.canRestore"
+              class="text-left text-[11px] text-sky-300 underline-offset-2 hover:underline"
+              @click="restorePreSync"
+            >
+              Sync replaced this computer's links. Put them back
+            </button>
+          </div>
+        </template>
+
         <h3 class="mt-4 border-t border-white/10 px-1 pb-2 pt-3 text-xs font-semibold uppercase tracking-wider text-white/45">Backup</h3>
         <p class="px-1 pb-2 text-[11px] leading-snug text-white/45">
-          Your links and settings are saved in this browser. Export them to keep a copy or move them to another one.
+          Export your links and settings to keep a copy, or to move them to a browser that doesn't sync.
         </p>
         <div class="flex flex-wrap gap-1.5 px-1">
           <button class="field flex items-center gap-1 !text-xs hover:bg-white/20" @click="download">

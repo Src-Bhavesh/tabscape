@@ -8,7 +8,7 @@ Copy these into the Developer Dashboard. Images are in this folder.
 
 **Summary** (132 characters max)
 
-> Your links, a greeting and an animated night sky on every new tab. Pick your sites, choose a look, make it yours.
+> A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.
 
 **Category:** Productivity
 
@@ -35,7 +35,7 @@ Copy these into the Developer Dashboard. Images are in this folder.
 > • Open links in the same tab or a new one
 >
 > **Private by design**
-> Everything stays in your browser. Tabscape asks for no permissions, has no account, and sends nothing anywhere. Export a backup file any time to keep your setup or move it to another computer.
+> Tabscape has no account and no servers. Your setup lives in your browser and follows you to your other computers through your own Chrome sync, if you want it to. Export a backup file any time to keep a copy.
 
 ## Graphics
 
@@ -52,11 +52,11 @@ Copy these into the Developer Dashboard. Images are in this folder.
 
 > Replaces the new tab page with a customisable start page showing the user's links, a greeting and a background they choose.
 
-**Permission justification:** the extension requests no permissions. It only uses `chrome_url_overrides` to provide the new tab page.
+**Permission justification:** `storage` saves the user's links and settings, and syncs them between their own browsers through Chrome sync when they leave "Sync across devices" on. The new tab page itself comes from `chrome_url_overrides`.
 
 **Remote code:** No, I am not using remote code. All scripts are packaged with the extension.
 
-**Data usage:** tick nothing. Tabscape does not collect or transmit any user data. Links and settings are stored locally in the browser (`localStorage`) and never leave the device.
+**Data usage:** tick nothing. Tabscape does not collect or transmit any user data to the developer or anyone else. Links and settings are stored in the browser, and copied between the user's own browsers only by Chrome sync (`chrome.storage.sync`), under their own Google account.
 
 Then tick the three certifications (data not sold, not used for unrelated purposes, not used for creditworthiness).
 
