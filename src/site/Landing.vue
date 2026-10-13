@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import {
-  ArrowRight, Cloud, LayoutGrid, Palette, Puzzle, ShieldCheck, Sparkles, Wand2
+  ArrowRight, Cloud, LayoutGrid, Palette, ShieldCheck, Sparkles, Wand2
 } from 'lucide-vue-next'
+import { siFirefoxbrowser, siGooglechrome } from 'simple-icons'
 import AnimatedWallpaper from '@/components/AnimatedWallpaper.vue'
+import BrandIcon from '@/components/BrandIcon.vue'
 import { CHROME_STORE_URL, FIREFOX_STORE_URL } from '@/config'
 import { findWallpaper } from '@/lib/wallpapers'
 import logo from '@/assets/logo.svg'
@@ -18,8 +20,8 @@ const sky = findWallpaper('stars')
 
 /** Where to get it. Whichever browser the visitor is using comes first. */
 const STORES = [
-  { name: 'Chrome', url: CHROME_STORE_URL },
-  { name: 'Firefox', url: FIREFOX_STORE_URL }
+  { name: 'Chrome', url: CHROME_STORE_URL, icon: siGooglechrome.path },
+  { name: 'Firefox', url: FIREFOX_STORE_URL, icon: siFirefoxbrowser.path }
 ]
 if (navigator.userAgent.includes('Firefox')) STORES.reverse()
 
@@ -85,13 +87,13 @@ const active = ref(0)
               :href="store.url"
               class="flex items-center gap-2 rounded-full bg-sky-500 px-6 py-3 font-medium text-white shadow-lg transition hover:bg-sky-400"
             >
-              <Puzzle :size="18" /> Add to {{ store.name }}
+              <BrandIcon :path="store.icon" :size="18" /> Add to {{ store.name }}
             </a>
             <span
               v-else
               class="flex items-center gap-2 rounded-full px-5 py-3 text-sm text-white/60 ring-1 ring-white/15"
             >
-              <Puzzle :size="16" /> {{ store.name }}: coming soon
+              <BrandIcon :path="store.icon" :size="16" /> {{ store.name }}: coming soon
             </span>
           </template>
         </div>
