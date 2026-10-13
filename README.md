@@ -1,0 +1,44 @@
+<p align="center">
+  <img src="src/assets/logo.svg" width="96" alt="Tabscape logo">
+</p>
+
+<h1 align="center">Tabscape</h1>
+
+<p align="center">A new tab that feels like home: your favourite sites, a friendly hello, and a night sky that moves.</p>
+
+<p align="center">
+  <a href="https://heyjeay.github.io/Tabscape/">Website</a> ·
+  <a href="https://heyjeay.github.io/Tabscape/demo/">Live demo</a>
+</p>
+
+![Tabscape](store/screenshots/1-new-tab.png)
+
+## What it does
+
+- **Set up in a minute:** pick sites from popular categories, or start from a ready-made set.
+- **Your sites, your way:** rename and recolour sections, and drag links between them. Changes save as you type.
+- **Backgrounds that breathe:** starry night, city lights, rain, fireflies and snowfall, drawn live on a canvas.
+- **Make it yours:** a greeting with your name, an optional clock and search box, and your links at the top, centre or bottom.
+- **Follows you around:** with Chrome sync on, your setup appears on any browser signed into your account.
+- **Private by design:** no account, no servers, no tracking.
+
+## Building
+
+Needs Node 20 or newer.
+
+```bash
+npm install
+npm run dev              # the new tab page, at http://localhost:5173
+npm run build:extension  # the Chrome extension, in dist-extension/
+npm run build:site       # the website and live demo, in dist-site/
+npm run build            # a single index.html that opens with a double-click, in dist/
+```
+
+To try the extension, open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked** and choose `dist-extension`.
+
+Built with Vue 3, Vite and Tailwind CSS. Pushing to `master` deploys the website to GitHub Pages.
+
+## Licence
+
+Tabscape is free software under the [GNU General Public License v3.0 or later](LICENSE).
+The bundled Google Sans Flex font is under the [SIL Open Font License](public/licenses/google-sans-flex-OFL.txt).
