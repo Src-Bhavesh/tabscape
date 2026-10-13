@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        product: ['product', 'Open Sans', 'system-ui', 'sans-serif'],
+        product: ['Google Sans Flex', 'system-ui', 'sans-serif'],
       },
     },
   },

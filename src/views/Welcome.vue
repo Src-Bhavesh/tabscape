@@ -72,7 +72,7 @@ const restore = async (e: Event) => {
     completeWelcome(state.sections)
     goHome()
   } catch {
-    notice.value = "That file isn't a startpage export."
+    notice.value = "That file isn't a Tabscape export."
   }
 }
 </script>
@@ -89,6 +89,12 @@ const restore = async (e: Event) => {
       >
         <X :size="18" />
       </button>
+
+      <div class="mb-6 flex items-center justify-center gap-2.5">
+        <!-- Bound, so it stays a plain URL next to index.html rather than a module import. -->
+        <img :src="'icons/logo.svg'" alt="" class="h-8 w-8">
+        <span class="text-lg font-semibold tracking-tight text-white/90">Tabscape</span>
+      </div>
 
       <!-- Where they are. -->
       <ol class="mb-8 flex items-center justify-center gap-2 text-xs text-white/45">

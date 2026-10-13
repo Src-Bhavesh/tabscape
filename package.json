@@ -1,14 +1,16 @@
 {
-  "name": "startpage",
+  "name": "tabscape",
   "private": true,
   "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:extension": "vue-tsc --noEmit && vite build --mode extension"
   },
   "dependencies": {
+    "@fontsource-variable/google-sans-flex": "^5.3.2",
     "lucide-vue-next": "^0.475.0",
     "vue": "^3.5.25",
     "vue-router": "^4.5.0"

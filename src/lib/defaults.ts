@@ -1,4 +1,5 @@
 import type { Gradient } from './gradients'
+import { DEFAULT_WALLPAPER } from './wallpapers'
 
 export interface Link {
   id: string
@@ -42,7 +43,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
-  background: 'stars',
+  background: DEFAULT_WALLPAPER,
   customImage: '',
   dim: 0.35,
   blur: 0,

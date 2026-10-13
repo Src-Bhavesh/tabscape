@@ -1,7 +1,7 @@
 /**
  * Backgrounds for the page. The gradients are Brink's new tab wallpapers,
- * ported as-is so the two look of a piece; the original GIF, animated
- * scenes from lib/scenes and a custom image sit alongside them.
+ * ported as-is so the two look of a piece; animated scenes from lib/scenes
+ * and a custom image sit alongside them.
  *
  * A scrim is laid over the top to keep white text readable - heavier on the
  * light ones, where it would otherwise be white on near-white.
@@ -25,13 +25,6 @@ export interface Wallpaper {
 export const PLAIN = '#202125'
 
 export const WALLPAPERS: Wallpaper[] = [
-  {
-    id: 'classic',
-    name: 'Original',
-    scrim: 0.15,
-    image: true,
-    background: `url(res/images/wallpaper.gif) center / cover no-repeat, ${PLAIN}`
-  },
   {
     id: 'city',
     name: 'City Lights',
@@ -154,7 +147,11 @@ export const customWallpaper = (url: string): Wallpaper => ({
   background: url.trim() ? `url(${JSON.stringify(url.trim())}) center / cover no-repeat, ${PLAIN}` : PLAIN
 })
 
+/** The background a first visit gets, and where an unknown or retired one falls back to. */
+export const DEFAULT_WALLPAPER = 'stars'
+
 export const findWallpaper = (id: string, customUrl = ''): Wallpaper => {
   if (id === 'custom') return customWallpaper(customUrl)
-  return WALLPAPERS.find(w => w.id === id) ?? plainWallpaper
+  if (id === 'none') return plainWallpaper
+  return WALLPAPERS.find(w => w.id === id) ?? WALLPAPERS.find(w => w.id === DEFAULT_WALLPAPER)!
 }

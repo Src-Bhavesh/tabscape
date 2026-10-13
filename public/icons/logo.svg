@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#070a1f"/>
+      <stop offset="0.6" stop-color="#0d1338"/>
+      <stop offset="1" stop-color="#1c2463"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.8" cy="0.12" r="0.75">
+      <stop offset="0" stop-color="#8b6cff" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#8b6cff" stop-opacity="0"/>
+    </radialGradient>
+    <!-- The page's four section colours, as under each column title. -->
+    <linearGradient id="flame" x1="0" x2="1"><stop offset="0" stop-color="#fc4a1a"/><stop offset="1" stop-color="#f7b733"/></linearGradient>
+    <linearGradient id="sky2" x1="0" x2="1"><stop offset="0" stop-color="#0072ff"/><stop offset="1" stop-color="#00c6ff"/></linearGradient>
+    <linearGradient id="mint" x1="0" x2="1"><stop offset="0" stop-color="#11998e"/><stop offset="1" stop-color="#38ef7d"/></linearGradient>
+    <linearGradient id="rose" x1="0" x2="1"><stop offset="0" stop-color="#dd2476"/><stop offset="1" stop-color="#ff512f"/></linearGradient>
+    <mask id="moon">
+      <circle cx="94" cy="32" r="12" fill="#fff"/>
+      <circle cx="100" cy="27" r="11" fill="#000"/>
+    </mask>
+  </defs>
+
+  <rect width="128" height="128" rx="28" fill="url(#sky)"/>
+  <rect width="128" height="128" rx="28" fill="url(#glow)"/>
+
+  <circle cx="94" cy="32" r="12" fill="#fff4d6" mask="url(#moon)"/>
+  <g fill="#fff">
+    <circle cx="30" cy="26" r="1.8" opacity="0.9"/>
+    <circle cx="52" cy="17" r="1.2" opacity="0.7"/>
+    <circle cx="66" cy="34" r="1.5" opacity="0.8"/>
+    <circle cx="20" cy="44" r="1.1" opacity="0.6"/>
+    <circle cx="112" cy="54" r="1.3" opacity="0.7"/>
+    <circle cx="44" cy="40" r="0.9" opacity="0.5"/>
+  </g>
+
+  <rect x="22" y="58" width="80" height="9" rx="4.5" fill="url(#flame)"/>
+  <rect x="22" y="73" width="62" height="9" rx="4.5" fill="url(#sky2)"/>
+  <rect x="22" y="88" width="72" height="9" rx="4.5" fill="url(#mint)"/>
+  <rect x="22" y="103" width="50" height="9" rx="4.5" fill="url(#rose)"/>
+</svg>

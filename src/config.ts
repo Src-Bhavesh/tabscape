@@ -2,5 +2,5 @@
 export const debug = false
 
 export const log = (...args: unknown[]) => {
-  if (debug) console.log('[startpage]', ...args)
+  if (debug) console.log('[tabscape]', ...args)
 }

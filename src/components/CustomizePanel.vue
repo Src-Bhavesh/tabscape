@@ -54,7 +54,7 @@ const download = () => {
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
   a.href = url
-  a.download = `startpage-${new Date().toISOString().slice(0, 10)}.json`
+  a.download = `tabscape-${new Date().toISOString().slice(0, 10)}.json`
   a.click()
   // Free the blob once the download has it.
   setTimeout(() => URL.revokeObjectURL(url), 0)
@@ -69,7 +69,7 @@ const upload = async (e: Event) => {
     importData(await file.text())
     notice.value = 'Imported.'
   } catch {
-    notice.value = "That file isn't a startpage export."
+    notice.value = "That file isn't a Tabscape export."
   }
 }
 

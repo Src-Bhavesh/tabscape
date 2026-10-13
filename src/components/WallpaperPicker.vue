@@ -35,7 +35,7 @@ const options = computed(() => [plainWallpaper, ...WALLPAPERS, customWallpaper(s
             <ImagePlus :size="18" />
           </span>
           <span
-            v-if="option.scene || option.id === 'classic'"
+            v-if="option.scene"
             class="absolute bottom-1 left-1 rounded-full bg-black/45 p-0.5 text-white/85"
             title="Animated"
           >

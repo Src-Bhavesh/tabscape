@@ -13,6 +13,7 @@ import type { Gradient } from '@/lib/gradients'
  * One store for the whole app, created on first import: its watchers and the
  * storage listener live as long as the page does, so there is nothing to tear down.
  */
+// Storage keys keep the project's old name, so links saved before the rename still load.
 const SECTIONS_KEY = 'startpage_sections'
 const SETTINGS_KEY = 'startpage_settings'
 /** Set once the first-run setup has been finished or skipped. */
@@ -27,7 +28,7 @@ const read = (key: string): unknown => {
     lastWritten[key] = raw
     return raw ? JSON.parse(raw) : undefined
   } catch (e) {
-    console.warn(`[startpage] Couldn't read ${key}, using defaults`, e)
+    console.warn(`[tabscape] Couldn't read ${key}, using defaults`, e)
     return undefined
   }
 }
@@ -40,7 +41,7 @@ const write = (key: string, value: unknown) => {
     lastWritten[key] = json
     log('saved', key)
   } catch (e) {
-    console.warn(`[startpage] Couldn't save ${key}`, e)
+    console.warn(`[tabscape] Couldn't save ${key}`, e)
   }
 }
 
@@ -198,7 +199,7 @@ export const useStartpage = () => {
     try {
       localStorage.setItem(WELCOMED_KEY, '1')
     } catch (e) {
-      console.warn("[startpage] Couldn't save the setup flag", e)
+      console.warn("[tabscape] Couldn't save the setup flag", e)
     }
     log('setup finished with', sections.length, 'sections')
   }
