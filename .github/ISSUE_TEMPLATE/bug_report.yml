@@ -1,0 +1,42 @@
+name: Bug report
+description: Something in Tabscape isn't working as it should.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What did you do, what did you expect, and what happened instead?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open a new tab
+        2. Click the pencil
+        3. ...
+  - type: dropdown
+    id: browser
+    attributes:
+      label: Browser
+      options:
+        - Chrome
+        - Firefox
+        - Edge
+        - Brave
+        - Opera
+        - Other
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Tabscape version
+      description: Shown on your browser's extensions page.
+      placeholder: "1.1.1"
+  - type: textarea
+    id: extra
+    attributes:
+      label: Screenshots or anything else

@@ -45,7 +45,12 @@ To try it in Firefox, open `about:debugging#/runtime/this-firefox`, click **Load
 
 Built with Vue 3, Vite and Tailwind CSS. Pushing to `master` deploys the website to GitHub Pages.
 
+## Contributing
+
+Contributions are welcome: bug fixes, new backgrounds, new site categories, ideas. See [CONTRIBUTING.md](CONTRIBUTING.md) for how to get set up, and say hi on the [Discord](https://discord.gg/T5bF56tvyj) before starting anything big.
+
 ## Licence
 
-Tabscape is free software under the [GNU General Public License v3.0 or later](LICENSE).
+Tabscape is free software under the [GNU General Public License v3.0 or later](LICENSE): use it, change it and share it, and share your changes back under the same licence.
+The Tabscape name and logo aren't covered by the GPL. If you publish your own version, give it its own name and logo; see [TRADEMARKS.md](TRADEMARKS.md).
 The bundled Google Sans Flex font is under the [SIL Open Font License](public/licenses/google-sans-flex-OFL.txt).
