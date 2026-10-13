@@ -3,10 +3,10 @@ import { ref } from 'vue'
 import {
   ArrowRight, Cloud, LayoutGrid, Palette, ShieldCheck, Sparkles, Wand2
 } from 'lucide-vue-next'
-import { siDiscord, siFirefoxbrowser, siGooglechrome } from 'simple-icons'
+import { siDiscord, siFirefoxbrowser, siGithub, siGooglechrome } from 'simple-icons'
 import AnimatedWallpaper from '@/components/AnimatedWallpaper.vue'
 import BrandIcon from '@/components/BrandIcon.vue'
-import { CHROME_STORE_URL, DISCORD_URL, FIREFOX_STORE_URL } from '@/config'
+import { CHROME_STORE_URL, DISCORD_URL, FIREFOX_STORE_URL, GITHUB_URL } from '@/config'
 import { findWallpaper } from '@/lib/wallpapers'
 import logo from '@/assets/logo.svg'
 import shotPage from '../../store/screenshots/1-new-tab.png'
@@ -61,6 +61,7 @@ const active = ref(0)
         <a href="#features" class="hidden rounded-md px-3 py-2 transition hover:bg-white/10 hover:text-white sm:block">Features</a>
         <a href="#look" class="hidden rounded-md px-3 py-2 transition hover:bg-white/10 hover:text-white sm:block">A closer look</a>
         <a href="#privacy" class="hidden rounded-md px-3 py-2 transition hover:bg-white/10 hover:text-white sm:block">Privacy</a>
+        <a href="#contribute" class="hidden rounded-md px-3 py-2 transition hover:bg-white/10 hover:text-white md:block">Contribute</a>
         <a href="./demo/" class="ml-2 rounded-full bg-white/10 px-4 py-2 text-white ring-1 ring-white/15 transition hover:bg-white/20">Try it</a>
       </nav>
     </header>
@@ -181,6 +182,55 @@ const active = ref(0)
         </div>
       </section>
 
+      <!-- Open source: the way in for anyone who wants to help build it. -->
+      <section id="contribute" class="mx-auto max-w-3xl scroll-mt-6 px-5 pb-4 pt-4">
+        <div class="rounded-2xl bg-white/[.06] p-8 ring-1 ring-white/10 backdrop-blur-md">
+          <div class="flex flex-col items-center gap-5 text-center sm:flex-row sm:items-start sm:text-left">
+            <span class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-white text-neutral-900 shadow-lg">
+              <BrandIcon :path="siGithub.path" :size="30" />
+            </span>
+            <div class="flex-1">
+              <h2 class="text-xl font-bold">Tabscape is open source. Help build it.</h2>
+              <p class="mt-1 text-white/70">
+                Fix a bug, add a background or a new site category, and send it as a pull request on GitHub.
+                Every contribution is reviewed, and merged ones ship to everyone in the next update.
+              </p>
+              <ol class="mt-4 grid gap-2 text-left text-sm text-white/65 sm:grid-cols-3">
+                <li class="rounded-lg bg-white/5 px-3 py-2"><span class="font-semibold text-white">1.</span> Fork the repo and run <code class="text-sky-300">npm run dev</code></li>
+                <li class="rounded-lg bg-white/5 px-3 py-2"><span class="font-semibold text-white">2.</span> Make your change and try it in your browser</li>
+                <li class="rounded-lg bg-white/5 px-3 py-2"><span class="font-semibold text-white">3.</span> Open a pull request</li>
+              </ol>
+              <div class="mt-5 flex flex-wrap justify-center gap-2 sm:justify-start">
+                <a
+                  :href="`${GITHUB_URL}/blob/master/CONTRIBUTING.md`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 rounded-full bg-white px-5 py-2.5 font-medium text-neutral-900 shadow-lg transition hover:bg-white/85"
+                >
+                  <BrandIcon :path="siGithub.path" :size="17" /> Start contributing
+                </a>
+                <a
+                  :href="`${GITHUB_URL}/issues`"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded-full px-5 py-2.5 text-sm text-white/80 ring-1 ring-white/20 transition hover:bg-white/10 hover:text-white"
+                >
+                  See open issues
+                </a>
+                <a
+                  :href="GITHUB_URL"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="rounded-full px-5 py-2.5 text-sm text-white/80 ring-1 ring-white/20 transition hover:bg-white/10 hover:text-white"
+                >
+                  Browse the code
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Support, at the bottom: the Discord is where help and feature ideas go. -->
       <section id="community" class="mx-auto max-w-3xl scroll-mt-6 px-5 pb-6 pt-4">
         <div class="flex flex-col items-center gap-5 rounded-2xl bg-[#5865F2]/15 p-8 text-center ring-1 ring-[#5865F2]/35 backdrop-blur-md sm:flex-row sm:text-left">
@@ -206,6 +256,9 @@ const active = ref(0)
     <footer class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-5 py-10 text-sm text-white/45">
       <span class="flex items-center gap-2"><img :src="logo" alt="" class="h-5 w-5"> Tabscape</span>
       <span class="flex items-center gap-4">
+        <a :href="GITHUB_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 transition hover:text-white">
+          <BrandIcon :path="siGithub.path" :size="15" /> GitHub
+        </a>
         <a :href="DISCORD_URL" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 transition hover:text-white">
           <BrandIcon :path="siDiscord.path" :size="15" /> Discord
         </a>

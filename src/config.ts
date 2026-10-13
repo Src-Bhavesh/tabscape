@@ -5,6 +5,9 @@ export const debug = false
 export const CHROME_STORE_URL = ''
 export const FIREFOX_STORE_URL = ''
 
+/** The source, where people contribute through pull requests. */
+export const GITHUB_URL = 'https://github.com/heyjeay/tabscape'
+
 /** Where people get help and suggest features. */
 export const DISCORD_URL = 'https://discord.gg/T5bF56tvyj'
 
