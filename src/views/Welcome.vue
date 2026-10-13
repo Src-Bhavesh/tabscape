@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { ArrowLeft, ArrowRight, Check, Upload, X } from 'lucide-vue-next'
 import WallpaperPicker from '@/components/WallpaperPicker.vue'
+import logo from '@/assets/logo.svg'
 import { useStartpage } from '@/composables/useStartpage'
 import { CATALOG, type Category } from '@/lib/catalog'
 import { gradientCss } from '@/lib/gradients'
@@ -91,8 +92,7 @@ const restore = async (e: Event) => {
       </button>
 
       <div class="mb-6 flex items-center justify-center gap-2.5">
-        <!-- Bound, so it stays a plain URL next to index.html rather than a module import. -->
-        <img :src="'icons/logo.svg'" alt="" class="h-8 w-8">
+        <img :src="logo" alt="" class="h-8 w-8">
         <span class="text-lg font-semibold tracking-tight text-white/90">Tabscape</span>
       </div>
 

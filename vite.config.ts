@@ -19,25 +19,33 @@ const chromeExtension = (): Plugin => ({
 
 export default defineConfig(({ mode }) => {
   const extension = mode === 'extension'
+  const site = mode === 'site'
+  const OUT = { extension: 'dist-extension', site: 'dist-site' } as Record<string, string>
   return {
-    plugins: [
-      vue(),
-      // Two ways to ship the same page:
-      // - extension: Chrome blocks inline scripts on extension pages, so the code stays in separate files.
-      // - default: all the code inside index.html, since browsers won't load separate module
-      //   scripts from file:// - this is what lets the page open with a double-click.
-      extension ? chromeExtension() : viteSingleFile(),
-    ],
-    // Relative, so the build works from wherever it's loaded.
+    // Three ways to ship the same page:
+    // - extension: Chrome blocks inline scripts on extension pages, so the code stays in separate files.
+    // - site: the website, a landing page at the root and the page itself as a live demo at /demo/.
+    // - default: all the code inside index.html, since browsers won't load separate module
+    //   scripts from file:// - this is what lets the page open with a double-click.
+    plugins: [vue(), ...(extension ? [chromeExtension()] : site ? [] : [viteSingleFile()])],
+    root: site ? path.resolve(__dirname, 'site') : __dirname,
+    publicDir: path.resolve(__dirname, 'public'),
+    // Relative, so every build works from wherever it's served or opened.
     base: './',
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
     },
+    // The site's pages live in site/, but its styles are configured here.
+    css: { postcss: __dirname },
     build: {
-      outDir: extension ? 'dist-extension' : 'dist',
+      outDir: path.resolve(__dirname, OUT[mode] ?? 'dist'),
+      emptyOutDir: true,
       reportCompressedSize: false,
+      rollupOptions: site
+        ? { input: { main: path.resolve(__dirname, 'site/index.html'), demo: path.resolve(__dirname, 'site/demo/index.html') } }
+        : undefined,
     },
     // Preview the extension build under the same script rules Chrome applies to extension pages.
     preview: extension

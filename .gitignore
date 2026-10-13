@@ -4,3 +4,4 @@ dist
 backups
 dist-extension
 store/*.zip
+dist-site
